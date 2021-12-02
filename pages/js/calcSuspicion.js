@@ -3,6 +3,13 @@
 let MOTIVES = null
 let CARS = null
 
+const WITHOUT_ALIBI = [
+    "93c0334f-754b-4ee8-bb45-4dd5c24470b4",
+    "3295122c-c10a-4ac2-9951-e2ebe4731f16",
+    "01a25297-1671-411f-8489-c45a87b905b7",
+    "9078bbfc-715c-439a-baa3-1407d5db7b49"
+]
+
 function getAllMotives(cb) {
     if (MOTIVES !== null) return cb(null, MOTIVES);
 
@@ -81,5 +88,8 @@ function calculateSuspicion(suspect) {
 }
 
 function calcAlibi(suspect, suspectSuspicion) {
+    if (WITHOUT_ALIBI.includes(suspect.id)) suspectSuspicion += 3
+    else suspectSuspicion -= 3;
+
     console.log(suspect.name + " is " + suspectSuspicion + " suspicion.")
 }
