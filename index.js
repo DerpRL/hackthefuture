@@ -1,22 +1,19 @@
 "use strict";
 
-const nodeFetch = require('node-fetch');
+require('dotenv').config();
 
+// Required Modules
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3001;
 
-const requestOptions = {
-    method: 'GET',
-    redirect: 'follow',
-    headers: {
-        'Content-Type': 'application/json',
-    }
-};
+app.use(express.static(__dirname + '/pages'));
 
-function getAllSuspects(cb=null) {
-    nodeFetch('https://htf-2021.zinderlabs.com/suspect', requestOptions).then(response => {
-        response.json().then(jsonResponse => {
-            console.log(jsonResponse)
-        }).catch(err => console.error(err))
-    }).catch(err => console.error(err))
-}
+// Main route
+app.get('/', (req, res) => {
+    res.render('index')
+})
 
-getAllSuspects()
+app.listen(PORT, () => {
+    console.log(`Now listening to requests on port ${PORT}`);
+})
