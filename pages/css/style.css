@@ -1,0 +1,36 @@
+body h1 {
+    font-size: 3rem;
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+#suspects {
+    width: 90%;
+    margin: 3rem auto 0 auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 40px 60px;
+}
+
+.suspect-info {
+    width: 150px;
+    height: 170px;
+    border: solid 2px black;
+    position: relative;
+}
+
+.suspect-info h2 {
+    padding: 5px;
+    background-color: white;
+    position: absolute;
+    bottom: 4%;
+    right: 2%;
+}
+
+.suspect-info img {
+    width: 150px;
+    height: 170px;
+}
+

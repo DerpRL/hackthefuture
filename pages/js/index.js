@@ -3,15 +3,24 @@
 document.addEventListener("DOMContentLoaded", init)
 
 function init() {
-    console.log('Page Loaded')
-
-    loadAllSuspects()
+    loadAllSuspects();
 }
 
 function loadAllSuspects() {
 
     getRequest('suspect', (err, result) => {
-        console.log(err)
-        console.log(result)
+        if (err) console.error("Error getting the suspects.");
+
+        result.forEach(suspect => {
+            console.log(suspect)
+
+            document.querySelector('#suspects').innerHTML += `
+                <div itemid=${suspect.id} class="suspect-info">
+                    <h2 class="suspect-name">${suspect.name}</h2>
+                    <img draggable="false" alt="suspect-image" src=${suspect.imgSrc}>
+                </div>
+            `
+        })
     })
+
 }
