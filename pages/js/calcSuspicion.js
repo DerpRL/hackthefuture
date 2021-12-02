@@ -37,15 +37,6 @@ function getAllCars(cb) {
     })
 }
 
-function getSightingCar(licensePlate, cb) {
-    getRequest( `sighting/car/${licensePlate}`, (err, result) => {
-        if (err) return cb(err)
-        if (result[0]) {
-            console.log('API REQUEST ARRIVED')
-            return cb(null, result[0])
-        }
-    })
-}
 
 function calculateSuspicion(suspect) {
     if (MOTIVES === null) return console.log("MOTIVES NULL");
@@ -62,25 +53,28 @@ function calculateSuspicion(suspect) {
 
     // Calculate Suspicion based on cars
     if (suspectCar.length > 0) {
-        console.log("CREATING NEW API REQUEST")
-
         const SIGHTING_CAR_LOCAL = localStorage.getItem(`hackthefuture-sighting-car-${suspectCar[0].licenseplate}`);
 
         if (SIGHTING_CAR_LOCAL === null) {
-            getSightingCar(suspectCar[0].licenseplate, (err ,result) => {
-                if (err) return console.error(err);
+            getRequest( `sighting/car/${suspectCar[0].licenseplate}`, (err, result) => {
+                if (err) return console.log(err)
+                if (result[0]) {
+                    localStorage.setItem(`hackthefuture-sighting-car-${suspectCar[0].licenseplate}`, JSON.stringify(result[0]))
 
-                console.log(result)
-                localStorage.setItem(`hackthefuture-sighting-car-${suspectCar[0].licenseplate}`, JSON.parse(result))
+                    const carLeaveTime = parseInt(result[0].endTime.split(':')[0]);
 
-                const carLeaveTime = parseInt(result.endTime.split(':')[0]);
+                    if (carLeaveTime < 24 && carLeaveTime > 6) suspectSuspicion -= 50
+                    else if (carLeaveTime < 1) suspectSuspicion -= 50
 
-                if (carLeaveTime < 24 && carLeaveTime > 6) suspectSuspicion -= 50
-                else if (carLeaveTime < 1) suspectSuspicion -= 50
-
-                calcAlibi(suspect, suspectSuspicion)
+                    calcAlibi(suspect, suspectSuspicion)
+                }
             })
         } else {
+            const carLeaveTime = parseInt(JSON.parse(SIGHTING_CAR_LOCAL).endTime.split(':')[0]);
+
+            if (carLeaveTime < 24 && carLeaveTime > 6) suspectSuspicion -= 50
+            else if (carLeaveTime < 1) suspectSuspicion -= 50
+
             calcAlibi(suspect, suspectSuspicion)
         }
     }
