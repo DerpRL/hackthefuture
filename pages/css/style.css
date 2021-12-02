@@ -29,8 +29,17 @@ body h1 {
     right: 2%;
 }
 
+.suspect-info p {
+    position: absolute;
+    top: -15%;
+    width: 100%;
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
 .suspect-info img {
     width: 150px;
     height: 170px;
 }
-
